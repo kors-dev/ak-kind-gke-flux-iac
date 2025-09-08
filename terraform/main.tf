@@ -31,9 +31,6 @@ resource "tls_private_key" "flux_git_ssh" {
   algorithm = "ED25519"
 }
 
-# ===== (Опційно) створюємо репозиторій для маніфестів Flux =====
-# Якщо репозиторій уже існує — виконай import:
-#   tofu import github_repository.flux_repo kors-dev/<repo-name>
 resource "github_repository" "flux_repo" {
   name                   = var.flux_repo # напр. "kbot-flux-infra" або "ak-kind-gke-flux-iac"
   description            = "Flux manifests and config"
@@ -54,7 +51,6 @@ resource "github_repository_deploy_key" "flux_key" {
 }
 
 # ===== Flux provider: підключення до кластера через стандартний kubeconfig KIND =====
-# ВАЖЛИВО: provider не може посилатись на ресурси, тому тут використовуємо тільки var/* та pathexpand().
 provider "flux" {
   kubernetes = {
     config_path = pathexpand("~/.kube/config")
@@ -71,7 +67,7 @@ provider "flux" {
   }
 }
 
-# ===== Власне bootstrap Flux у кластер + початковий коміт у Git =====
+# =====  bootstrap Flux у кластер + початковий коміт у Git =====
 resource "flux_bootstrap_git" "this" {
   path = "flux/clusters/kind"
 
