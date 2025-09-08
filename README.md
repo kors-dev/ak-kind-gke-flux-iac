@@ -75,40 +75,11 @@ kubectl get nodes -o wide
   export TF_VAR_github_token="$GITHUB_TOKEN"
   ```
 
+  ```bash
+    export TELEGRAM_BOT_TOKEN='<your telegram bot token>'
+    kubectl -n default create secret generic kbot --from-literal=token="$TELEGRAM_BOT_TOKEN"
+  ```
 > Variable names in your setup may differ slightly — follow the files in `terraform/`.
-
-## Common issues & quick fixes
-
-### 1) `403 Resource not accessible by integration`
-**Cause:** You’re using an integration `GITHUB_TOKEN` (Codespaces/GitHub App) that cannot create repositories.
-
-**Fix:**
-- Generate a **Personal Access Token (classic)** with `repo` (and `admin:org` if needed).
-- Set `owner = "kors-dev"` (or your owner) in the GitHub provider.
-- Re-run `tofu init` → `tofu apply`.
-
-### 2) `422 Repository creation failed: name already exists`
-**Cause:** A repository with the same name already exists.
-
-**Options:**
-- **Import** the existing repo into state:
-  ```bash
-  tofu import github_repository.flux_repo kors-dev/<repo-name>
-  ```
-- **Or** change the repo name in Terraform and `apply` again.
-
-### 3) `node(s) already exist for a cluster with the name "kind-cluster"`
-**Cause:** A kind cluster with that name already exists on your machine.
-
-**Options:**
-- Delete the existing cluster:
-  ```bash
-  kind get clusters
-  kind delete cluster --name kind-cluster
-  docker network rm kind 2>/dev/null || true
-  ```
-- **Or** import the existing cluster to Terraform state (if the module supports it).
-- **Or** rename the cluster via module variables (set a different `name`).
 
 ## Clean up
 
@@ -117,27 +88,3 @@ tofu destroy
 # if the cluster is still around:
 kind delete cluster --name kind-cluster
 ```
-
-## Next steps (Flux)
-
-1. Install the `flux` CLI: <https://fluxcd.io/docs/installation/>
-2. Use the GitHub repo prepared by this project for your manifests.
-3. Bootstrap example (GitHub):
-   ```bash
-   flux bootstrap github \
-     --owner=kors-dev \
-     --repository=<your-flux-repo> \
-     --branch=main \
-     --path=clusters/local \
-     --personal
-   ```
-   > If you want to use a pre-generated SSH key, pass the corresponding CLI flags or add the key in repo settings.
-
-## Repository layout (minimal)
-
-```
-.
-├── flux/                 # optional: Flux manifests/templates
-└── terraform/            # OpenTofu/Terraform IaC
-```
-
