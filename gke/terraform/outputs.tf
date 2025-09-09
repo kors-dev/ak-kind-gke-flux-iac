@@ -1,7 +1,19 @@
-output "cluster_name" {
+########################################
+# outputs.tf
+########################################
+
+output "gke_cluster_name" {
   value = google_container_cluster.gke.name
 }
 
-output "get_credentials_cmd" {
-  value = "gcloud container clusters get-credentials ${google_container_cluster.gke.name} --zone ${var.zone} --project ${var.project_id}"
+output "gke_location" {
+  value = google_container_cluster.gke.location
+}
+
+output "gke_endpoint" {
+  value = google_container_cluster.gke.endpoint
+}
+
+output "kubeconfig_path" {
+  value = pathexpand("~/.kube/config")
 }
