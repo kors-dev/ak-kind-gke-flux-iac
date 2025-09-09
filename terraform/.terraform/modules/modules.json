@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"kind_cluster","Source":"git::https://github.com/den-vasyliev/tf-kind-cluster.git","Dir":".terraform/modules/kind_cluster"}]}
