@@ -1,5 +1,6 @@
 variable "github_owner" {
   type = string
+  default = "kors-dev"
 }
 
 variable "flux_repo" {
