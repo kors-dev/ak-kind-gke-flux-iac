@@ -1,6 +1,6 @@
 # ---- збираємо файли ----
 locals {
-  flux_src_dir = abspath("${path.module}/../flux")
+  flux_src_dir = abspath("${path.module}/../../flux")
 
   # усі yaml/yml у flux/
   flux_yaml = setunion(
