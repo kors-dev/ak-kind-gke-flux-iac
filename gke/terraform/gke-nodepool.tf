@@ -4,7 +4,7 @@
 
 resource "google_container_node_pool" "default" {
   name     = "np-default"
-  location = var.region             # якщо кластер зональний — постав var.zone
+  location = var.region # якщо кластер зональний — постав var.zone
   cluster  = google_container_cluster.gke.name
 
   # Фіксований розмір пулу; хочеш автоскейл — заміни на блок autoscaling{}

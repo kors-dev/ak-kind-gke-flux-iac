@@ -39,7 +39,7 @@ resource "null_resource" "gke_kubeconfig" {
   }
 
   provisioner "local-exec" {
-    command = "gcloud container clusters get-credentials ${google_container_cluster.gke.name} --region ${var.region}"
+    command     = "gcloud container clusters get-credentials ${google_container_cluster.gke.name} --region ${var.region}"
     environment = { USE_GKE_GCLOUD_AUTH_PLUGIN = "True" }
   }
 

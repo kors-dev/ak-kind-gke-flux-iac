@@ -2,6 +2,28 @@
 # providers.tf
 ########################################
 
+terraform {
+  required_version = ">= 1.6.0"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 7.0" # або залиш "~> 5.0" — головне бути послідовним у всьому репо
+    }
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
+    flux = {
+      source  = "fluxcd/flux" # ВАЖЛИВО: не hashicorp/flux
+      version = "~> 1.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
+    }
+  }
+}
+
 # Google Cloud (ADC з gcloud)
 provider "google" {
   project = var.project_id
